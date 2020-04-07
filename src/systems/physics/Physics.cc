@@ -67,6 +67,8 @@
 #include <sdf/Link.hh>
 #include <sdf/Mesh.hh>
 #include <sdf/Model.hh>
+#include <sdf/Surface.hh>
+#include <sdf/Visual.hh>
 #include <sdf/World.hh>
 
 #include "ignition/gazebo/EntityComponentManager.hh"
@@ -138,6 +140,8 @@ class ignition::gazebo::systems::PhysicsPrivate
           ignition::physics::GetEntities,
           ignition::physics::GetContactsFromLastStepFeature,
           ignition::physics::RemoveEntities,
+          ignition::physics::CollisionFilterMaskFeature,
+          ignition::physics::mesh::AttachMeshShapeFeature,
           ignition::physics::GetBasicJointProperties,
           ignition::physics::GetBasicJointState,
           ignition::physics::SetBasicJointState,
@@ -689,6 +693,7 @@ void PhysicsPrivate::CreatePhysicsEntities(const EntityComponentManager &_ecm)
         sdf::Collision collision = _collElement->Data();
         collision.SetRawPose(_pose->Data());
         collision.SetPoseRelativeTo("");
+        uint16_t collideBitmask = collision.Surface()->Contact()->CollideBitmask();
 
         ShapePtrType collisionPtrPhys;
         if (_geom->Data().Type() == sdf::GeometryType::MESH)
@@ -729,6 +734,7 @@ void PhysicsPrivate::CreatePhysicsEntities(const EntityComponentManager &_ecm)
         {
           collisionPtrPhys = linkPtrPhys->ConstructCollision(collision);
         }
+        collisionPtrPhys->SetCollisionFilterMask(collideBitmask);
 
         this->entityCollisionMap.insert(
             std::make_pair(_entity, collisionPtrPhys));
