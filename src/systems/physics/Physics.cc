@@ -68,7 +68,6 @@
 #include <sdf/Mesh.hh>
 #include <sdf/Model.hh>
 #include <sdf/Surface.hh>
-#include <sdf/Visual.hh>
 #include <sdf/World.hh>
 
 #include "ignition/gazebo/EntityComponentManager.hh"
@@ -141,7 +140,6 @@ class ignition::gazebo::systems::PhysicsPrivate
           ignition::physics::GetContactsFromLastStepFeature,
           ignition::physics::RemoveEntities,
           ignition::physics::CollisionFilterMaskFeature,
-          ignition::physics::mesh::AttachMeshShapeFeature,
           ignition::physics::GetBasicJointProperties,
           ignition::physics::GetBasicJointState,
           ignition::physics::SetBasicJointState,
